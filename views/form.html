@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Karma</title>
+	<meta charset="utf-8">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+	<div class="container well">
+		<div class="row">
+			<br />
+			<h3>Add your credit card</h3>
+			<hr />
+
+			<div class="alert alert-danger hidden error-wrapper">
+				<ul class="error-holder"></ul>
+			</div>
+			<form method="post" action="storeCreditCard">
+				<div class="row">
+					<div class="form-group">
+						<div class="col-md-8">
+							<label for="cardNo">Card Number</label>
+							<input type="number" name="cardNo" placeholder="Card Number" class="form-control">
+							<span class="error-message text-danger hidden">Enter card number</span>
+						</div>
+						<div class="col-md-4">
+							<label for="cvv">Card Number</label>
+							<input type="number" name="cvv" placeholder="CVV" class="form-control">
+							<span class="error-message text-danger hidden">Enter CVV</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="holderName">Holder Name</label>
+					<input type="text" name="holderName" placeholder="Holder Name" class="form-control">
+					<span class="error-message text-danger hidden">Enter Holder Name</span>
+				</div>
+
+				<button class="btn btn-success btn-sm" type="submit">Add</button>
+			</form>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script type="text/javascript">
+		(function($){
+			$("form").on('submit', function(e){
+				e.preventDefault();
+
+				if(isValid()){
+					$.post($(this).attr('action'), $(this).serialize(), function(){
+						$(".error-holder").html('');
+						$(".error-message, .error-holder").addClass("hidden");
+					})
+					.done(function(res){
+						alert("Success! Credit card saved.");
+					})
+					.fail(function(res){
+						var json = JSON.parse(res.responseJSON);
+						json.messages.forEach(function(msg){
+							$(".error-holder").append("<li>" + msg + "</li>");
+						});
+
+						$(".error-wrapper").removeClass("hidden");
+
+						return;
+					});
+				}
+			})
+
+			var isValid = function(){
+				var invalidIndex = 0;
+
+				$("input").each(function(){
+					if($(this).val() == null || $(this).val() == ''){
+					console.log($(this).val());
+						$(this).closest('.form-group').find('.error-message').removeClass('hidden');
+						invalidIndex++;
+					}
+				});
+
+				return invalidIndex == 0;
+			}
+		})($);
+	</script>
+</body>
+</html>

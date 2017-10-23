@@ -1,0 +1,17 @@
+{
+  "name": "karma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cryptr": "^2.0.0",
+    "express": "^4.16.2",
+    "luhn": "^2.1.0",
+    "pg": "^7.3.0"
+  }
+}
